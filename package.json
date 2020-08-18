@@ -1,0 +1,39 @@
+{
+  "name": "expense-tracker-backend",
+  "version": "1.0.0",
+  "description": "An Acklen Avenue Assessment Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d dist",
+    "start": "npm run build && node dist",
+    "restart": "rimraf dist && npm run start",
+    "dev": "nodemon --exec npm run restart"
+  },
+  "keywords": [
+    "Acklen",
+    "Avenue",
+    "Expense",
+    "Tracker"
+  ],
+  "author": "Victor Idongesit",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.3.2",
+    "pg-hstore": "^2.3.3",
+    "rimraf": "^3.0.2",
+    "sequelize": "^6.3.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.1",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.0",
+    "rimraff": "0.0.1-security"
+  }
+}
