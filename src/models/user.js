@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt'
+
 'use strict';
 const {
   Model
@@ -39,9 +41,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         len: {
-          args: [10, 100],
+          args: [8, 100],
           msg: 'Password must be 10 characters long with no leading or trailing spaces'
         }
       }
@@ -50,5 +53,10 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+
+  User.beforeSave((user) => {
+    user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(5), null);
+  });
+
   return User;
 };
