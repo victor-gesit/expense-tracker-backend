@@ -4,12 +4,14 @@ module.exports = {
     await queryInterface.createTable('Expenses', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       purpose: {
         type: Sequelize.STRING
+      },
+      category: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -18,6 +20,18 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: false
+      },
+      month: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      year: {
+        type: DataTypes.INTEGER,
+        allowNull: false
       }
     });
   },

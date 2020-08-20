@@ -12,9 +12,10 @@ router.post('/resetpassword', authController.resetpassword)
 
 router.use(tokenValidator.validatetoken)
 
-router.post('/create-expense', expenseController.createExpense)
-router.get('/read-expenses', expenseController.readExpense)
-router.post('/update-expense', expenseController.updateExpense)
-router.delete('/delete-expense', expenseController.deleteExpense)
+router.post('/expense', expenseController.createExpense)
+router.get('/expenses', expenseController.readExpenses)
+router.get('/expense', expenseController.readExpenses)
+router.put('/expense', expenseController.updateExpense)
+router.delete('/expense', expenseController.deleteExpense)
 
 export default router

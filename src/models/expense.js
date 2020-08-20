@@ -14,12 +14,44 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Expense.init({
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
+    },
     purpose: {
+      allowNull: false,
       type: DataTypes.STRING,
+    },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    amount: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+      defaultValue: 0
+    },
+    month: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    year: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {
     sequelize,
     modelName: 'Expense',
   });
+
+  Expense.associate = (models) => {
+    Expense.belongsTo(models.User, {
+      onDelete: 'CASCADE',
+      foreignKey: 'userId'
+    })
+  }
+
   return Expense;
 };

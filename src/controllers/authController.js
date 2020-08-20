@@ -40,7 +40,7 @@ export default {
             return res.status(200).send({
                 message: 'Signed in successfully',
                 success: true,
-                token: token,
+                token,
                 user: { name: user.name, email: user.email, id: user.id, createdAt: user.createdAt}
             })
         }).catch((err) => {
@@ -65,17 +65,18 @@ export default {
         let newUser = User.build({
             name, email, password
         })
-
+        
         newUser.save().then((user) => {
+            const token = jwt.sign({ id: user.id}, jwtSecret)
             return res.status(201).send({
                 message: 'User  created successfully',
                 success: true,
+                token,
                 user: { name: user.name, email: user.email, id: user.id, createdAt: user.createdAt}
             })
         }).catch((err) => {
             let errors = err.errors || []
             let messages = errors.map((err) => err.message)
-            console.log("Err... ", messages)
             return res.status(400).send({ message: "Sign up failed" , success: false, errors: messages})
         })
     },
