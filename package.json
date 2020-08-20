@@ -16,6 +16,8 @@
   "author": "Victor Idongesit",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/node": "^7.10.5",
     "@babel/register": "^7.10.5",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
@@ -30,8 +32,6 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.1",
-    "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.0",
     "rimraff": "0.0.1-security"
   }
