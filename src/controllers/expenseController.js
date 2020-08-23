@@ -32,7 +32,7 @@ export default {
             Expense.create({
                 purpose, amount, category, category, userId, month, year
             }).then((expense) => {
-                return res.status(200).send({ message: 'Expense Created', expense})
+                return res.status(200).send({ message: 'Expense Created', expense, success: true })
             }).catch((err) => {
                 let errors = err.errors || []
                 let messages = errors.map((err) => err.message)

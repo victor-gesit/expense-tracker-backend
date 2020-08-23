@@ -10,7 +10,7 @@ var port = process.env.PORT || 8000;
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(logger('env'))
+app.use(logger('combined'))
 
 
 app.use('/api', routes);
