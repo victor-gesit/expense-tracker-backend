@@ -15,6 +15,6 @@ router.use(tokenValidator.validatetoken)
 router.post('/expense', expenseController.createExpense)
 router.get('/expense', expenseController.readExpenses)
 router.put('/expense', expenseController.updateExpense)
-router.delete('/expense?expense', expenseController.deleteExpense)
+router.delete('/expense', expenseController.deleteExpense)
 
 export default router
