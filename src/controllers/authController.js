@@ -14,7 +14,7 @@ export default {
         const password = req.body.password
 
         if (!email || !password) {
-            return res.status(401).send({ message: "Email or password missing", success: false})
+            return res.status(400).send({ message: "Email or password missing", success: false})
         }
         User.findOne({
             where: {
@@ -55,7 +55,7 @@ export default {
         let name = req.body.name || ''
 
         if(!email  || !password || !name) {
-            return res.status(402).send({ message: "Provide `email`, `password` and `name`", success: false})
+            return res.status(400).send({ message: "Provide `email`, `password` and `name`", success: false})
         }
 
         email = email.trim()
@@ -81,6 +81,6 @@ export default {
         })
     },
     resetpassword: (req, res) => {
-        return res.status(200).send({ message: 'password reset'})
+        return res.status(200).send({ message: 'password reset not implemented yet'})
     }
 }

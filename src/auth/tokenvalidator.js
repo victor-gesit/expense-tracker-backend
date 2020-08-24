@@ -11,7 +11,7 @@ export default  {
             jwt.verify(token, jwtSecret, (err, decoded) => {
                 if(err) {
                     return res.status(402).send({
-                        message: 'Could not authenticate token', error: err
+                        message: 'Could not authenticate token', success: false
                     })
                 }
                 req.decoded = decoded;

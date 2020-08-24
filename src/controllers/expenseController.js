@@ -32,7 +32,7 @@ export default {
             Expense.create({
                 purpose, amount, category, category, userId, month, year
             }).then((expense) => {
-                return res.status(200).send({ message: 'Expense Created', expense, success: true })
+                return res.status(201).send({ message: 'Expense Created', expense, success: true })
             }).catch((err) => {
                 let errors = err.errors || []
                 let messages = errors.map((err) => err.message)
@@ -66,21 +66,18 @@ export default {
             }
             expense.amount = amount
             expense.save().then((updatedExpense) => {
-                console.log("Updated.. ", updatedExpense)
                 return res.status(200).send({ message: 'Update Expense', expense, success: true })
             }).catch((err) => {
-                console.log("Foun ", expense)
                 let errors = err.errors || []
                 let messages = errors.map((err) => err.message)
                 return res.status(400).send({ message: 'Expense Update Failed', success: false, errors: messages})
             })
         }).catch((err) => {
-            console.log("Err. ", err)
             return res.status(400).send({ message: 'Expense Update Failed', success: false})
         })
     },
     deleteExpense: (req, res) => {
-        const { expenseId } = req.body
+        const { expenseId } = req.query
         if(!expenseId) {
             return res.status(404).send({ message: 'Specify an expenseId', success: false })
         }
