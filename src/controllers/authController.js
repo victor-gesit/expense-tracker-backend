@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import bcrypt from 'bcrypt';
+import nodemailer from 'nodemailer'
 import models from '../models'
+import emailTemplate from './utils/emailTemplate'
 
 dotenv.config()
 const jwtSecret = process.env.JWT_SECRET;
@@ -80,7 +82,65 @@ export default {
             return res.status(400).send({ message: "Sign up failed" , success: false, errors: messages})
         })
     },
-    resetpassword: (req, res) => {
-        return res.status(200).send({ message: 'password reset not implemented yet'})
+    recoverAccount: async (req, res) => {
+        const { email } = req.body
+        if (!email) {
+            return res.status(400).send({ message: 'Provide recovery email', success: false })
+        }
+        User.findOne({ where: { email }})
+            .then((user) => {
+                if(!user) {
+                    return res.status(400).send({ message: 'Password reset failed. User does not exits', success: false})
+                }
+
+                const name = user.name
+                const token = jwt.sign({ id: user.id}, jwtSecret, { 
+                    expiresIn: 600 // 10 minutes
+                })
+
+                const htmlTemplate =  emailTemplate.html(name, token)
+                const options = {
+                    from: process.env.EMAIL_USERNAME,
+                    to: email,
+                    subject: 'Password Reset',
+                    html: htmlTemplate
+                };
+
+                const transporter = nodemailer.createTransport({
+                    service: process.env.EMAIL_SERVICE,
+                    auth: {
+                    user: process.env.EMAIL_USERNAME,
+                    pass: process.env.EMAIL_PASSWORD
+                    }
+                });
+
+                transporter.sendMail(options).then(() => {
+                    return res.status(200).send({ message: 'Recovery email sent successfully'})
+                }).catch((error) => {
+                    return res.status(500).send({ message: 'Could not send recovery email', succes: false })
+                })
+            }).catch((error) => {
+                    return res.status(400).send({ message: 'Password reset failed', success: false})
+            })
+    },
+    resetPassword: (req, res) => {
+        const { id } = req.decoded
+        const password = req.body.newPassword
+
+        User.findOne({ where: { id }}).then((user) => {
+            if (!user) {
+                return res.status(400).send({ message: 'Password recovery failed', success: false })
+            }
+            user.password = password
+            user.save().then(() => {
+                return res.status(200).send({ message: 'Password reset successfully', success: true })
+            }).catch((err) => {
+                let errors = err.errors || []
+                let messages = errors.map((err) => err.message)
+                return res.status(400).send({ message: "Password recovery failed" , success: false, errors: messages})
+            })
+        }).catch((err) => {
+            return res.status(400).send({ message: 'Password reset failed', success: false })
+        })
     }
 }
