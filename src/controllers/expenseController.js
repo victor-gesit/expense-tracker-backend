@@ -36,7 +36,7 @@ export default {
             }).catch((err) => {
                 let errors = err.errors || []
                 let messages = errors.map((err) => err.message)
-                return res.status(400).send({ message: "Could not create expense", success: false, errors: messages})
+                return res.status(400).send({ message: 'Could not create expense', success: false, errors: messages})
             })
         }).catch((err) => {
             return res.status(404).send({ 

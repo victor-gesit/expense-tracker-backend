@@ -16,7 +16,7 @@ export default {
         const password = req.body.password
 
         if (!email || !password) {
-            return res.status(400).send({ message: "Email or password missing", success: false})
+            return res.status(400).send({ message: 'Email or password missing', success: false})
         }
         User.findOne({
             where: {
@@ -48,7 +48,7 @@ export default {
         }).catch((err) => {
             let errors = err.errors || []
             let messages = errors.map((err) => err.message)
-            return res.status(401).send({ message: "Sign in failed" , success: false, errors: messages})
+            return res.status(401).send({ message: 'Sign in failed' , success: false, errors: messages})
         })
     },
     signup: (req, res) => {
@@ -57,7 +57,7 @@ export default {
         let name = req.body.name || ''
 
         if(!email  || !password || !name) {
-            return res.status(400).send({ message: "Provide `email`, `password` and `name`", success: false})
+            return res.status(400).send({ message: 'Provide `email`, `password` and `name`', success: false})
         }
 
         email = email.trim()
@@ -79,7 +79,7 @@ export default {
         }).catch((err) => {
             let errors = err.errors || []
             let messages = errors.map((err) => err.message)
-            return res.status(400).send({ message: "Sign up failed" , success: false, errors: messages})
+            return res.status(400).send({ message: 'Sign up failed' , success: false, errors: messages})
         })
     },
     recoverAccount: async (req, res) => {
@@ -90,7 +90,7 @@ export default {
         User.findOne({ where: { email }})
             .then((user) => {
                 if(!user) {
-                    return res.status(400).send({ message: 'Password reset failed. User does not exits', success: false})
+                    return res.status(400).send({ message: 'Password reset failed. User does not exist', success: false})
                 }
 
                 const name = user.name
@@ -100,7 +100,7 @@ export default {
 
                 const htmlTemplate =  emailTemplate.html(name, token)
                 const options = {
-                    from: process.env.EMAIL_USERNAME,
+                    from: '"eTracker" theexpensetrackerapp@gmail.com',
                     to: email,
                     subject: 'Password Reset',
                     html: htmlTemplate
@@ -109,15 +109,15 @@ export default {
                 const transporter = nodemailer.createTransport({
                     service: process.env.EMAIL_SERVICE,
                     auth: {
-                    user: process.env.EMAIL_USERNAME,
-                    pass: process.env.EMAIL_PASSWORD
+                        user: process.env.EMAIL_ADDRESS,
+                        pass: process.env.EMAIL_PASSWORD
                     }
                 });
 
                 transporter.sendMail(options).then(() => {
-                    return res.status(200).send({ message: 'Recovery email sent successfully'})
+                    return res.status(200).send({ message: 'Recovery mail sent successfully', success: true})
                 }).catch((error) => {
-                    return res.status(500).send({ message: 'Could not send recovery email', succes: false })
+                    return res.status(500).send({ message: 'Could not send recovery mail', success: false })
                 })
             }).catch((error) => {
                     return res.status(400).send({ message: 'Password reset failed', success: false})
@@ -137,7 +137,7 @@ export default {
             }).catch((err) => {
                 let errors = err.errors || []
                 let messages = errors.map((err) => err.message)
-                return res.status(400).send({ message: "Password recovery failed" , success: false, errors: messages})
+                return res.status(400).send({ message: 'Password recovery failed' , success: false, errors: messages})
             })
         }).catch((err) => {
             return res.status(400).send({ message: 'Password reset failed', success: false })
